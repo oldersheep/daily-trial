@@ -1,14 +1,10 @@
 package com.xxx.notes.configure;
 
-import org.springframework.boot.context.config.ConfigFileApplicationListener;
-import org.springframework.boot.env.PropertySourceLoader;
+
 import org.springframework.boot.env.YamlPropertySourceLoader;
-import org.springframework.core.env.PropertiesPropertySource;
 import org.springframework.core.env.PropertySource;
-import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.DefaultPropertySourceFactory;
 import org.springframework.core.io.support.EncodedResource;
-import org.springframework.core.io.support.ResourcePropertySource;
 
 import java.io.IOException;
 
