@@ -4,14 +4,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.xxx.notes</groupId>
-    <artifactId>daily-work</artifactId>
+    <artifactId>daily-trial</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <modules>
-        <module>code-generator</module>
-    </modules>
-    <packaging>pom</packaging>
+    <packaging>jar</packaging>
 
-    <name>daily-work</name>
+    <name>daily-trial</name>
     <description>Daily notes!!</description>
 
     <parent>
