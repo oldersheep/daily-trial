@@ -1,5 +1,5 @@
 /target/
-.mvn
+/.mvn/
 !.mvn/wrapper/maven-wrapper.jar
 
 ### STS ###
@@ -29,3 +29,4 @@
 
 ### Project ###
 /logs/
+mvnw
