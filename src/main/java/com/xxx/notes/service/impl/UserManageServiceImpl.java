@@ -4,7 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.xxx.notes.base.constant.Constant;
 import com.xxx.notes.base.service.RedisService;
-import com.xxx.notes.base.utils.TokenGeneratorUtil;
+import com.xxx.notes.base.util.TokenGeneratorUtils;
 import com.xxx.notes.dto.SysResult;
 import com.xxx.notes.entity.UserEntity;
 import com.xxx.notes.mapper.UserMapper;
@@ -35,7 +35,7 @@ public class UserManageServiceImpl implements UserManageService {
 
         UserEntity user = userMapper.findByUsernameAndPassword(username, password);
         if (user != null) {
-            String token = TokenGeneratorUtil.md5Generate(username, password);
+            String token = TokenGeneratorUtils.md5Generate(username, password);
             redisService.set(username, token, Constant.TOKEN_EXPIRE_TIME);
             redisService.set(token, username, Constant.TOKEN_EXPIRE_TIME);
             redisService.set(token + username, System.currentTimeMillis() + "");

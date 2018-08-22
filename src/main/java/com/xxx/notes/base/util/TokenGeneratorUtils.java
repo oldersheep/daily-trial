@@ -1,15 +1,15 @@
-package com.xxx.notes.base.utils;
+package com.xxx.notes.base.util;
 
 import org.springframework.util.DigestUtils;
 
 /**
- * @ClassName TokenGeneratorUtil
+ * @ClassName TokenGeneratorUtils
  * @Description
  * @Author l17561
  * @Date 2018/8/13 9:12
  * @Version V1.0
  */
-public class TokenGeneratorUtil {
+public class TokenGeneratorUtils {
 
     /**
      * MD5形式的token生成方式

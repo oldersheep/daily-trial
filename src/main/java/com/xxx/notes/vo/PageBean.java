@@ -1,6 +1,6 @@
 package com.xxx.notes.vo;
 
-import com.xxx.notes.base.utils.StringUtil;
+import com.xxx.notes.base.util.StringUtils;
 
 import java.io.Serializable;
 
@@ -66,7 +66,7 @@ public class PageBean implements Serializable {
         if (this.byRule == null || "".equals(this.byRule)) {
             this.byRule = "desc";
         }
-        return StringUtil.humpToLine(orderCols) + " " + byRule;
+        return StringUtils.humpToLine(orderCols) + " " + byRule;
     }
 
 }

@@ -1,16 +1,16 @@
-package com.xxx.notes.base.utils;
+package com.xxx.notes.base.util;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * @ClassName StringUtil
+ * @ClassName StringUtils
  * @Description 字符串的工具类
  * @Author l17561
  * @Date 2018/8/15 11:43
  * @Version V1.0
  */
-public class StringUtil {
+public class StringUtils {
 
     private static Pattern linePattern = Pattern.compile("_(\\w)");
     private static Pattern humpPattern = Pattern.compile("[A-Z]");
