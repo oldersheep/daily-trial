@@ -1,7 +1,6 @@
 package com.xxx.notes.controller;
 
-import com.alibaba.fastjson.JSONObject;
-import com.xxx.notes.base.annotations.AuthToken;
+import com.xxx.notes.base.annotation.AuthToken;
 import com.xxx.notes.dto.SysResult;
 import com.xxx.notes.service.UserManageService;
 import com.xxx.notes.vo.PageBean;

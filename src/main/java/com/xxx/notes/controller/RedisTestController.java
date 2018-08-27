@@ -1,7 +1,7 @@
 package com.xxx.notes.controller;
 
-import com.xxx.notes.base.annotations.Key;
-import com.xxx.notes.base.annotations.SaveRedis;
+import com.xxx.notes.base.annotation.Key;
+import com.xxx.notes.base.annotation.SaveRedis;
 import com.xxx.notes.entity.MemberEntity;
 import com.xxx.notes.dto.SysResult;
 import io.swagger.annotations.ApiOperation;

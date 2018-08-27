@@ -1,7 +1,7 @@
-package com.xxx.notes.base.aspects;
+package com.xxx.notes.base.aspect;
 
-import com.xxx.notes.base.annotations.Key;
-import com.xxx.notes.base.annotations.SaveRedis;
+import com.xxx.notes.base.annotation.Key;
+import com.xxx.notes.base.annotation.SaveRedis;
 import com.xxx.notes.base.service.RedisService;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -28,7 +28,7 @@ public class RedisAspect {
     @Autowired
     private RedisService redisService;
 
-    @Pointcut("@annotation(com.xxx.notes.base.annotations.SaveRedis)")
+    @Pointcut("@annotation(com.xxx.notes.base.annotation.SaveRedis)")
     public void saveRedis(){}
 
 //    /**

@@ -89,7 +89,7 @@ public class YmlPropertyFactory extends DefaultPropertySourceFactory {
 
 ### 自定义注解保存到Redis，以及动态指定Key
 
-​	保存到    `@SaveRedis`的注解，这个是作用在方法级别的注解，标注此方法的结果会保存在Redis中，Key值默认为KEY_，如果参数标有`@Key`的注解，那么这个参数的值，会拼接在默认注解后面，作为整体的key值，这里只是一个普遍的使用方式，并未做任何特殊性扩展。具体可参照`com.xxx.notes.base.aspects.RedisAspect`。
+​	保存到    `@SaveRedis`的注解，这个是作用在方法级别的注解，标注此方法的结果会保存在Redis中，Key值默认为KEY_，如果参数标有`@Key`的注解，那么这个参数的值，会拼接在默认注解后面，作为整体的key值，这里只是一个普遍的使用方式，并未做任何特殊性扩展。具体可参照`com.xxx.notes.base.aspect.RedisAspect`。
 
 
 
@@ -132,7 +132,8 @@ public class YmlPropertyFactory extends DefaultPropertySourceFactory {
 
 
 
+## 加入MyBatis-Generator
 
-
-
+* 主要的配置文件在src/main/resources/mybatis下面
+* 运行命令为 mvn mybatis-generator:generate
 

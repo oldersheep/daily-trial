@@ -1,7 +1,7 @@
 package com.xxx.notes.base.interceptor;
 
 import com.alibaba.fastjson.JSONObject;
-import com.xxx.notes.base.annotations.AuthToken;
+import com.xxx.notes.base.annotation.AuthToken;
 import com.xxx.notes.base.constant.Constant;
 import com.xxx.notes.base.service.RedisService;
 import org.slf4j.Logger;
