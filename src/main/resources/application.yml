@@ -22,7 +22,9 @@ spring:
       max-lifetime: 20000
       connection-timeout: 10000
       connection-test-query: SELECT 1
-
+file:
+  path: D:/Other/upload/
+  url: http://localhost:8000/
 # Log
 logging:
   level:
