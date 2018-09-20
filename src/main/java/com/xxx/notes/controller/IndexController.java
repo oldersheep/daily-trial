@@ -2,6 +2,7 @@ package com.xxx.notes.controller;
 
 import com.xxx.notes.base.annotation.AuthToken;
 import com.xxx.notes.dto.SysResult;
+import com.xxx.notes.service.EmailSerrvice;
 import com.xxx.notes.service.UserManageService;
 import com.xxx.notes.vo.PageBean;
 import com.xxx.notes.vo.User;
@@ -24,6 +25,8 @@ public class IndexController {
 
     @Autowired
     private UserManageService userManageService;
+    @Autowired
+    private EmailSerrvice emailSerrvice;
 
     @ApiOperation(value = "登录方法接口", notes="登录")
     @RequestMapping(value = "/login", method = RequestMethod.POST, produces={"application/json"})
@@ -38,5 +41,12 @@ public class IndexController {
     public SysResult testAuth(@RequestBody PageBean pageBean){
 
         return userManageService.listAllUser(pageBean);
+    }
+
+    @ApiOperation(value = "测试AuthToken注解", notes="测试AuthToken注解")
+    @RequestMapping(value = "/register", method = RequestMethod.GET)
+    public SysResult register(){
+        emailSerrvice.sendTemplateMail();
+        return SysResult.ok();
     }
 }
