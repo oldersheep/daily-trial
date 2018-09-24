@@ -2,6 +2,7 @@ package com.xxx.notes.service.impl;
 
 import com.xxx.notes.service.EmailSerrvice;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -20,15 +21,18 @@ public class EmailServiceImpl implements EmailSerrvice {
     @Autowired
     private TemplateEngine templateEngine;
 
+    @Value("${spring.mail.username}")
+    private String from;
+
 
     @Override
-    public void sendTemplateMail() {
+    public void sendTemplateMail(String id) {
         try {
             Context context = new Context();
-            context.setVariable("id","006");
+            context.setVariable("id",id);
 
             String email = templateEngine.process("email", context);
-            sendHtmlMail("983701431@qq.com", "注册账号", email);
+            sendHtmlMail("llg3904@163.com", "注册账号", email);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -38,6 +42,7 @@ public class EmailServiceImpl implements EmailSerrvice {
     private void sendHtmlMail(String to, String subject, String content) throws MessagingException {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
+        helper.setFrom(from);
         helper.setTo(to);
         helper.setSubject(subject);
         helper.setText(content, true);

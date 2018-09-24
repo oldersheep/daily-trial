@@ -46,7 +46,7 @@ public class IndexController {
     @ApiOperation(value = "测试AuthToken注解", notes="测试AuthToken注解")
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public SysResult register(){
-        emailSerrvice.sendTemplateMail();
+        emailSerrvice.sendTemplateMail("3");
         return SysResult.ok();
     }
 }
