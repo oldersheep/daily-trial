@@ -27,6 +27,12 @@ spring:
     username: llg3904@163.com
     password: 8023you
     default-encoding: UTF-8
+  activemq:
+    broker-url: tcp://192.168.145.128:61616
+  cache:
+    type: caffeine
+
+
 file:
   path: D:/Other/upload/
   url: http://localhost:8000/
@@ -48,16 +54,4 @@ mybatis:
     use-generated-keys: true
     use-column-label: true
 
-#mybatis-plus:
-#  mapper-locations: classpath*:/mapper/*.xml
-#  type-aliases-package: com.xxx.notes.entity
-#  configuration:
-#    map-underscore-to-camel-case: true
-#    use-generated-keys: true
-#    use-column-label: true
-#  global-config:
-#    id-type: 0 #主键类型  0:"数据库ID自增", 1:"用户输入ID",2:"全局唯一ID (数字类型唯一ID)", 3:"全局唯一ID UUID";
-#    field-strategy: 2 #字段策略 0:"忽略判断",1:"非 NULL 判断"),2:"非空判断"
-#    db-column-underline: true
-#    refresh-mapper: true #刷新mapper 调试神器
 
