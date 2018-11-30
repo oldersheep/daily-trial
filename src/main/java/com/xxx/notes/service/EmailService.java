@@ -1,6 +1,6 @@
 package com.xxx.notes.service;
 
-public interface EmailSerrvice {
+public interface EmailService {
 
     /**
      * 发送注册邮件，细节有待细化

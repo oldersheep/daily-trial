@@ -17,7 +17,7 @@
                 create_time,
                 update_time,
                 del_flag
-        from tb_user
+        from sys_user
         where username=#{username}
           and password=#{password}
     </select>

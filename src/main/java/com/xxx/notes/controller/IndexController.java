@@ -2,7 +2,7 @@ package com.xxx.notes.controller;
 
 import com.xxx.notes.base.annotation.AuthToken;
 import com.xxx.notes.dto.SysResult;
-import com.xxx.notes.service.EmailSerrvice;
+import com.xxx.notes.service.EmailService;
 import com.xxx.notes.service.UserManageService;
 import com.xxx.notes.vo.PageBean;
 import com.xxx.notes.vo.User;
@@ -26,7 +26,7 @@ public class IndexController {
     @Autowired
     private UserManageService userManageService;
     @Autowired
-    private EmailSerrvice emailSerrvice;
+    private EmailService emailSerrvice;
 
     @ApiOperation(value = "登录方法接口", notes="登录")
     @RequestMapping(value = "/login", method = RequestMethod.POST, produces={"application/json"})

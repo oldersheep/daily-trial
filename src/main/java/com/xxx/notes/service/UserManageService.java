@@ -1,5 +1,7 @@
 package com.xxx.notes.service;
 
+import com.xxx.notes.base.annotation.Key;
+import com.xxx.notes.base.annotation.SaveRedis;
 import com.xxx.notes.dto.SysResult;
 import com.xxx.notes.vo.PageBean;
 
@@ -11,7 +13,7 @@ public interface UserManageService {
      * @param password 密码
      * @return
      */
-    SysResult login(String username, String password);
+     SysResult login(String username, String password);
 
     /**
      *  分页查询所有用户

@@ -1,5 +1,7 @@
 package com.xxx.notes.mapper;
 
+import com.xxx.notes.base.annotation.Key;
+import com.xxx.notes.base.annotation.SaveRedis;
 import com.xxx.notes.base.mapper.BaseMapper;
 import com.xxx.notes.entity.UserEntity;
 import org.apache.ibatis.annotations.Param;
@@ -14,6 +16,7 @@ public interface UserMapper extends BaseMapper<UserEntity> {
      * @param password 密码
      * @return 当前用户
      */
-    UserEntity findByUsernameAndPassword(@Param("username") String username,
+    @SaveRedis(prefix = "KE")
+    UserEntity findByUsernameAndPassword(@Key @Param("username") String username,
                                          @Param("password") String password);
 }

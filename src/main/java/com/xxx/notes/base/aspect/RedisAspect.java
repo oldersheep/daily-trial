@@ -1,5 +1,6 @@
 package com.xxx.notes.base.aspect;
 
+import com.alibaba.fastjson.JSON;
 import com.xxx.notes.base.annotation.Key;
 import com.xxx.notes.base.annotation.SaveRedis;
 import com.xxx.notes.base.service.RedisService;
@@ -31,19 +32,6 @@ public class RedisAspect {
     @Pointcut("@annotation(com.xxx.notes.base.annotation.SaveRedis)")
     public void saveRedis(){}
 
-//    /**
-//     *  注解的值无法进行动态赋值，所以这个办法不太对
-//     */
-//    @AfterReturning(pointcut = "saveRedis()")
-//    private void afterReturning(JoinPoint joinPoint){
-//        /*获取注解的name和value*/
-//        String prefix="GG_";
-//        SaveRedis saveRedis =((MethodSignature)joinPoint.getSignature()).getMethod().getAnnotation(SaveRedis.class);
-//        String key = prefix + saveRedis.name();
-//        String value = saveRedis.value();
-//        redisService.set(key, value);
-//    }
-
     @Around(value = "saveRedis()")
     private void aroundMethod(ProceedingJoinPoint proceedingJoinPoint){
         try {
@@ -66,10 +54,27 @@ public class RedisAspect {
             Object result = proceedingJoinPoint.proceed();
 
             // 后置通知，进行存储
-            redisService.set(key, result.toString());
-
+            if (result instanceof String) {
+                redisService.set(key, result.toString());
+            } else {
+                redisService.set(key, JSON.toJSONString(result));
+            }
         } catch (Throwable throwable) {
             throwable.printStackTrace();
         }
     }
+
+
+    //    /**
+//     *  注解的值无法进行动态赋值，所以这个办法不太对
+//     */
+//    @AfterReturning(pointcut = "saveRedis()")
+//    private void afterReturning(JoinPoint joinPoint){
+//        /*获取注解的name和value*/
+//        String prefix="GG_";
+//        SaveRedis saveRedis =((MethodSignature)joinPoint.getSignature()).getMethod().getAnnotation(SaveRedis.class);
+//        String key = prefix + saveRedis.name();
+//        String value = saveRedis.value();
+//        redisService.set(key, value);
+//    }
 }
