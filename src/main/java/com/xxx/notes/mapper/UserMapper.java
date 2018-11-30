@@ -7,6 +7,8 @@ import com.xxx.notes.entity.UserEntity;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface UserMapper extends BaseMapper<UserEntity> {
 
@@ -19,4 +21,7 @@ public interface UserMapper extends BaseMapper<UserEntity> {
     @SaveRedis(prefix = "KE")
     UserEntity findByUsernameAndPassword(@Key @Param("username") String username,
                                          @Param("password") String password);
+
+
+    List<UserEntity> findUserByNickNameLike(@Param("nickName") String nickName);
 }

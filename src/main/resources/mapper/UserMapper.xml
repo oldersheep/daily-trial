@@ -22,4 +22,16 @@
           and password=#{password}
     </select>
 
+    <select id="findUserByNickNameLike" resultType="com.xxx.notes.entity.UserEntity">
+        select id,
+                username,
+                password,
+                nick_name,
+                create_time,
+                update_time,
+                del_flag
+        from sys_user
+        where nick_name like CONCAT('%',#{nickName},'%')
+    </select>
+
 </mapper>

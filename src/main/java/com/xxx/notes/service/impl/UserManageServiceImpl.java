@@ -56,4 +56,10 @@ public class UserManageServiceImpl implements UserManageService {
         PageInfo<UserEntity> pageInfo = new PageInfo<>(users);
         return SysResult.ok(pageInfo);
     }
+
+    @Override
+    public List<UserEntity> findUserByNickNameLike(String nickName) {
+
+        return userMapper.findUserByNickNameLike(nickName);
+    }
 }

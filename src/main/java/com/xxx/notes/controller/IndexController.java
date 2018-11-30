@@ -8,10 +8,7 @@ import com.xxx.notes.vo.PageBean;
 import com.xxx.notes.vo.User;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @ClassName IndexController
@@ -48,5 +45,12 @@ public class IndexController {
     public SysResult register(){
         emailSerrvice.sendTemplateMail("3");
         return SysResult.ok();
+    }
+
+    @ApiOperation(value = "查找好友", notes="查找好友")
+    @RequestMapping(value = "/friend", method = RequestMethod.GET)
+    public SysResult searchFriend(@RequestParam(value = "nickName") String nickName) {
+
+        return SysResult.ok(userManageService.findUserByNickNameLike(nickName));
     }
 }
