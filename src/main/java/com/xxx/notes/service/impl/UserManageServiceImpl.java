@@ -13,6 +13,7 @@ import com.xxx.notes.vo.PageBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -59,7 +60,13 @@ public class UserManageServiceImpl implements UserManageService {
 
     @Override
     public List<UserEntity> findUserByNickNameLike(String nickName) {
+        List<UserEntity> userEntities = userMapper.findUserByNickNameLike(nickName);
+        return userEntities;
+    }
 
-        return userMapper.findUserByNickNameLike(nickName);
+    @Override
+    public void updateUserByUserName(UserEntity userEntity) {
+        userEntity.setUpdateTime(new Date());
+        userMapper.updateByPrimaryKeySelective(userEntity);
     }
 }

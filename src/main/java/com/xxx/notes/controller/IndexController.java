@@ -2,6 +2,7 @@ package com.xxx.notes.controller;
 
 import com.xxx.notes.base.annotation.AuthToken;
 import com.xxx.notes.dto.SysResult;
+import com.xxx.notes.entity.UserEntity;
 import com.xxx.notes.service.EmailService;
 import com.xxx.notes.service.UserManageService;
 import com.xxx.notes.vo.PageBean;
@@ -40,10 +41,12 @@ public class IndexController {
         return userManageService.listAllUser(pageBean);
     }
 
-    @ApiOperation(value = "测试AuthToken注解", notes="测试AuthToken注解")
-    @RequestMapping(value = "/register", method = RequestMethod.GET)
-    public SysResult register(){
-        emailSerrvice.sendTemplateMail("3");
+    @ApiOperation(value = "更新用户", notes="更新用户")
+    @PostMapping(value = "/register", produces={"application/json"})
+    public SysResult register(@RequestBody UserEntity userEntity){
+
+        userManageService.updateUserByUserName(userEntity);
+
         return SysResult.ok();
     }
 

@@ -2,7 +2,6 @@ package com.xxx.notes.configure;
 
 import com.github.pagehelper.PageHelper;
 import com.xxx.notes.base.plugin.LikeQueryInterceptor;
-import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -70,15 +69,15 @@ public class MybatisConfiguration {
     @Bean
     @ConfigurationProperties(prefix = "mybatis.configuration")
     public org.apache.ibatis.session.Configuration globalConfiguration() {
-//        org.apache.ibatis.session.Configuration configuration = new org.apache.ibatis.session.Configuration();
+        org.apache.ibatis.session.Configuration configuration = new org.apache.ibatis.session.Configuration();
 
-//        LikeQueryInterceptor interceptor = new LikeQueryInterceptor();
-//        Properties properties = new Properties();
-//
-//        interceptor.setProperties(properties);
-//        configuration.addInterceptor(interceptor);
+        LikeQueryInterceptor interceptor = new LikeQueryInterceptor();
+        Properties properties = new Properties();
+        properties.setProperty("dialect", "mysql");
+        interceptor.setProperties(properties);
+        configuration.addInterceptor(interceptor);
 
-        return new org.apache.ibatis.session.Configuration();
+        return configuration;
     }
 
 }

@@ -26,4 +26,6 @@ public interface UserManageService {
     SysResult listAllUser(PageBean pageBean);
 
     List<UserEntity> findUserByNickNameLike(String nickName);
+
+    void updateUserByUserName(UserEntity userEntity);
 }

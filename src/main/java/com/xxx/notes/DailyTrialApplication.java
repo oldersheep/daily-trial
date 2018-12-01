@@ -6,9 +6,7 @@ import org.springframework.boot.autoconfigure.data.jpa.JpaRepositoriesAutoConfig
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication(exclude = {JpaRepositoriesAutoConfiguration.class,
-        org.activiti.spring.boot.JpaProcessEngineAutoConfiguration.class,
-        org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration.class,
-        org.activiti.spring.boot.SecurityAutoConfiguration.class})
+        org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration.class})
 @EnableTransactionManagement
 public class DailyTrialApplication {
 

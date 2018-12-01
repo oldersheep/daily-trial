@@ -1,6 +1,7 @@
 package com.xxx.notes.mapper;
 
 import com.xxx.notes.base.annotation.Key;
+import com.xxx.notes.base.annotation.Like;
 import com.xxx.notes.base.annotation.SaveRedis;
 import com.xxx.notes.base.mapper.BaseMapper;
 import com.xxx.notes.entity.UserEntity;
@@ -23,5 +24,7 @@ public interface UserMapper extends BaseMapper<UserEntity> {
                                          @Param("password") String password);
 
 
-    List<UserEntity> findUserByNickNameLike(@Param("nickName") String nickName);
+    List<UserEntity> findUserByNickNameLike(@Like @Param("nickName") String nickName);
+
+    int updateByUserNameSelective(UserEntity userEntity);
 }

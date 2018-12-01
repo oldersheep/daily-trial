@@ -2,19 +2,11 @@ package com.xxx.notes.base.plugin;
 
 import org.apache.ibatis.cache.CacheKey;
 import org.apache.ibatis.executor.Executor;
-import org.apache.ibatis.executor.statement.StatementHandler;
 import org.apache.ibatis.mapping.*;
 import org.apache.ibatis.plugin.*;
-import org.apache.ibatis.reflection.MetaObject;
-import org.apache.ibatis.reflection.SystemMetaObject;
 import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
 
-import java.lang.reflect.Field;
-import java.sql.Connection;
-import java.sql.Statement;
-import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -24,12 +16,13 @@ import java.util.Properties;
  * @Date 2018/11/30 11:18
  * @Version V1.0
  */
-@Intercepts({
-        @Signature(type = StatementHandler.class, method = "prepare", args = {Connection.class, Integer.class}),
-        @Signature(type = StatementHandler.class, method = "query", args = {Statement.class, ResultHandler.class})
-})
-public class LikeQueryInterceptor implements Interceptor {
-
+@Intercepts(
+        {
+                @Signature(type = Executor.class, method = "query", args = {MappedStatement.class, Object.class, RowBounds.class, ResultHandler.class}),
+                @Signature(type = Executor.class, method = "query", args = {MappedStatement.class, Object.class, RowBounds.class, ResultHandler.class, CacheKey.class, BoundSql.class})
+        }
+)
+public class Test implements Interceptor {
 
     /**
      * 直接覆盖你所拦截的对象
@@ -40,24 +33,30 @@ public class LikeQueryInterceptor implements Interceptor {
      */
     @Override
     public Object intercept(Invocation invocation) throws Throwable {
-        StatementHandler statementHandler=(StatementHandler)invocation.getTarget();
-        MetaObject metaStatementHandler = SystemMetaObject.forObject(statementHandler);
 
-        //获取sql
-        String sql= String.valueOf(metaStatementHandler.getValue("delegate.boundSql.sql")).toUpperCase();
+        Object[] queryArgs = invocation.getArgs();
+        MappedStatement mappedStatement = (MappedStatement) queryArgs[0];
+        Object parameter = queryArgs[1];
 
-        List<ParameterMapping> parameterMappings = (List) metaStatementHandler.getValue("delegate.boundSql.parameterMappings");
-        for (ParameterMapping parameterMapping : parameterMappings) {
-            System.out.println(parameterMapping.getProperty());
-        }
-        String name = invocation.getMethod().getName();
-        System.out.println(name);
-
-        if (sql.contains(" LIKE ") && ! sql.contains(" BINARY ")) {
-            sql = sql.replaceAll(" LIKE ", " LIKE BINARY ");
+//        BoundSql boundSql = (BoundSql) invocation.getArgs()[5];
+        BoundSql boundSql = mappedStatement.getBoundSql(parameter);
+        String sql  = boundSql.getSql().toUpperCase();
+        if (sql.contains("LIKE") && ! sql.contains("BINARY")) {
+            sql = sql.replaceAll("LIKE", "LIKE BINARY");
         }
 
-        metaStatementHandler.setValue("delegate.boundSql.sql",sql);
+        BoundSql newBoundSql = new BoundSql(mappedStatement.getConfiguration(), sql, boundSql.getParameterMappings(), boundSql.getParameterObject());
+        // 把新的查询放到statement里
+        MappedStatement newMs = copyFromMappedStatement(mappedStatement, new BoundSqlSqlSource(newBoundSql));
+        for (ParameterMapping mapping : boundSql.getParameterMappings()) {
+            String prop = mapping.getProperty();
+            if (boundSql.hasAdditionalParameter(prop)) {
+                newBoundSql.setAdditionalParameter(prop, boundSql.getAdditionalParameter(prop));
+            }
+        }
+        invocation.getArgs()[0] = newMs;
+
+
         // 执行目标方法
         return invocation.proceed();
     }
