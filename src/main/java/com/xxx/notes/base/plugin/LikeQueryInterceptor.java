@@ -3,27 +3,18 @@ package com.xxx.notes.base.plugin;
 import com.xxx.notes.base.annotation.Like;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.binding.MapperMethod;
-import org.apache.ibatis.cache.CacheKey;
-import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.executor.statement.StatementHandler;
 import org.apache.ibatis.mapping.*;
 import org.apache.ibatis.plugin.*;
 import org.apache.ibatis.reflection.MetaObject;
 import org.apache.ibatis.reflection.SystemMetaObject;
-import org.apache.ibatis.session.ResultHandler;
-import org.apache.ibatis.session.RowBounds;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.lang.reflect.Type;
 import java.sql.Connection;
-import java.sql.Statement;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Properties;
+import java.util.*;
 
 /**
  * @ClassName LikeQueryInterceptor
@@ -33,8 +24,10 @@ import java.util.Properties;
  * @Version V1.0
  */
 @Intercepts({
-        @Signature(type = StatementHandler.class, method = "prepare", args = {Connection.class, Integer.class}),
-//        @Signature(type = StatementHandler.class, method = "query", args = {Statement.class, ResultHandler.class})
+        @Signature(type = StatementHandler.class,
+                method = "prepare",
+                args = {Connection.class,
+                        Integer.class})
 })
 public class LikeQueryInterceptor implements Interceptor {
 
@@ -49,72 +42,100 @@ public class LikeQueryInterceptor implements Interceptor {
     @Override
     public Object intercept(Invocation invocation) throws Throwable {
 
-        // 根据这个来判断query还是prepare，其实是不用的吧
-        String name = invocation.getMethod().getName();
-        System.out.println(name);
-
-        boolean continues = false;
+        Boolean continues = false;
 
         StatementHandler statementHandler=(StatementHandler)invocation.getTarget();
-        MetaObject metaStatementHandler = SystemMetaObject.forObject(statementHandler);
+        MetaObject metaObject = SystemMetaObject.forObject(statementHandler);
 
         //获取sql
-        String sql= String.valueOf(metaStatementHandler.getValue("delegate.boundSql.sql")).toUpperCase();
+        String sql= String.valueOf(metaObject.getValue("delegate.boundSql.sql")).toUpperCase();
 
         if (sql.contains(" LIKE ") && ! sql.contains(" BINARY ")) {
             sql = sql.replaceAll(" LIKE ", " LIKE BINARY ");
             continues = true;
         }
-        metaStatementHandler.setValue("delegate.boundSql.sql",sql);
+        // 将SQL重新放入
+        metaObject.setValue("delegate.boundSql.sql", sql);
 
+        // 如果SQL中没有like存在，则不用去替换值了
         if (!continues) {
-            // 执行目标方法
             return invocation.proceed();
         }
 
-        // TODO try try try
-        // 执行的方法名，包.类.方法
-        String id = (String) metaStatementHandler.getValue("delegate.mappedStatement.id");
+        // 获取到 执行的方法名——格式为：包.类.方法
+        String id = (String) metaObject.getValue("delegate.mappedStatement.id");
+
         // 大概是@Parma注解吧
-        Object obj = metaStatementHandler.getValue("delegate.boundSql.parameterObject");
+        /**
+         * 经测试，当有Param注解时， 它是MapperMethod.ParamMap，仍未发现特殊情况
+         * 没有Param注解时，它是参数的类型，比如java.lang.String、int、com.xxx.notes.entity.UserEntity
+         * 当有多个参数时，你没有@Param注解时，看mybatis给你报错不报错？？
+         * 所以，这个方法针对String的或者是自定义类的那种
+         */
+        Object obj = metaObject.getValue("delegate.boundSql.parameterObject");
 
         int i = id.lastIndexOf('.');
+        // 当前执行所执行的方法名
         String methodName = id.substring(i + 1);
+        // 方法所属的类
         String clazzName = id.substring(0, i);
+
+        // 通过反射，获取到执行的类的class，能走到这一步的话，这里应该不会有异常
         Class<?> clazz = Class.forName(clazzName);
+
+        // 当前类中所有的方法
         Method[] methods = clazz.getMethods();
         for (Method method : methods) {
+
             if (Objects.equals(methodName, method.getName())) {
+                /***
+                 * 获取到所有的参数列表
+                 * 这里分两种情况来做：
+                 * 一、当是String且有@Like的注解时
+                 *      这里需强制必须加@Param注解
+                 * 二、非基础类型和上面的情况时
+                 *      这里就没有什么限制了
+                 */
                 Parameter[] parameters = method.getParameters();
                 Type[] types = method.getGenericParameterTypes();
                 for (int j = 0; j < parameters.length; j++){
                     // 获取参数的类型
                     String typeName = types[j].getTypeName();
+                    // String + @Like + @Param
                     if (Objects.equals("java.lang.String", typeName)
                             && parameters[j].getAnnotation(Like.class) != null) {
 
                         Param param = parameters[j].getAnnotation(Param.class);
                         // 无@Param注解 TODO 有问题
-                        if (obj instanceof String) {
+                        if (obj instanceof String && param == null) {
                             obj = replaceSpecialCharacter(String.valueOf(obj));
 
-                        } else if (obj instanceof MapperMethod.ParamMap) {
-                            MapperMethod.ParamMap paramMap = (MapperMethod.ParamMap) obj;
-
-                            String value = replaceSpecialCharacter(String.valueOf(paramMap.get(param.value())));
-                            paramMap.put(param.value(), value);
-                            obj = paramMap;
-                        }
-                    } else {
-                        Object entity = null;
-                        Param param = parameters[j].getAnnotation(Param.class);
-                        if ( param != null) {
+                        } else if (obj instanceof MapperMethod.ParamMap && param != null) { // 这里应该是不会有特殊情况
+                            // 针对用户传入的值进行处理，并放回到对应的位置
                             MapperMethod.ParamMap paramMap = (MapperMethod.ParamMap) obj;
                             String value = param.value();
-                            entity = paramMap.get(value);
+                            value = replaceSpecialCharacter(String.valueOf(paramMap.get(value)));
+                            paramMap.put(param.value(), value);
+                            obj = paramMap;
+                        } else {
+                            // DO NOTHING 目前还没有想到其他情况
+                        }
+                    } else if (!isBasicTypeAndString(typeName)){ // 非基础类型和String到这里来
+                        Object entity = null;
+                        Param param = parameters[j].getAnnotation(Param.class);
+                        if (obj instanceof MapperMethod.ParamMap && param != null) {
+                            MapperMethod.ParamMap paramMap = (MapperMethod.ParamMap) obj;
+                            String value = param.value();
+                            entity = paramMap.get(value); // 拿到对应的实体
                         } else {
                             entity =obj;
                         }
+
+                        /**
+                         * 获取到自定义类 参数后，针对所有的属性进行循环，判断是否有@Like注解
+                         * 如果没有，就什么也不做，这样其实不大可能，如果有，那就是不过滤呗
+                         * 如果有，则将特殊字符过滤并重新赋值给对象
+                         */
                         Field[] fields = Class.forName(typeName).getDeclaredFields();
                         for (Field field : fields) {
                             Like like = field.getAnnotation(Like.class);
@@ -124,21 +145,18 @@ public class LikeQueryInterceptor implements Interceptor {
                                 if (fieldValue instanceof String) {
                                     field.set(entity, replaceSpecialCharacter((String) fieldValue));
                                 }
-                                // DO NOTHING
                             }
-
+                            // DO NOTHING
                         }
                     }
                 }
-                metaStatementHandler.setValue("delegate.boundSql.parameterObject", obj);
+                metaObject.setValue("delegate.boundSql.parameterObject", obj);
             }
         }
 
-        // 这里是SQL里面的参数即${} 里面的内容
-        List<ParameterMapping> parameterMappings = (List) metaStatementHandler.getValue("delegate.boundSql.parameterMappings");
-
-
-        // TODO end end end
+        // 这里是SQL里面的参数即${} 里面的内容，似乎没用到
+        List<ParameterMapping> parameterMappings = (List) metaObject.getValue("delegate.boundSql.parameterMappings");
+        // end end end
 
 
         // 执行目标方法
@@ -178,5 +196,24 @@ public class LikeQueryInterceptor implements Interceptor {
 
         return word.replaceAll("_", "\\\\_")
                 .replaceAll("%", "\\\\%");
+    }
+
+    /**
+     * 判断type是否是基础类型，是true、否false
+     * @param type
+     * @return
+     */
+    private Boolean isBasicTypeAndString(String type) {
+        List types = Arrays.asList(
+                "byte", "java.lang.Byte",
+                "boolean","java.lang.Boolean",
+                "char","java.lang.Character",
+                "short","java.lang.Short",
+                "int","java.lang.Integer",
+                "long","java.lang.Long",
+                "float","java.lang.Float",
+                "double","java.lang.Double","java.lang.String"
+        );
+        return types.contains(type);
     }
 }
