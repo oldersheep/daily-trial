@@ -60,13 +60,15 @@ public class UserManageServiceImpl implements UserManageService {
 
     @Override
     public List<UserEntity> findUserByNickNameLike(String nickName) {
-        List<UserEntity> userEntities = userMapper.findUserByNickNameLike(nickName);
+        UserEntity userEntity = new UserEntity();
+        userEntity.setNickName(nickName);
+        List<UserEntity> userEntities = userMapper.findUserByNickNameLike(userEntity);
         return userEntities;
     }
 
     @Override
     public void updateUserByUserName(UserEntity userEntity) {
         userEntity.setUpdateTime(new Date());
-        userMapper.updateByPrimaryKeySelective(userEntity);
+        userMapper.updateByUserNameSelective(userEntity);
     }
 }

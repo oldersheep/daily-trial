@@ -1,5 +1,7 @@
 package com.xxx.notes.entity;
 
+import com.xxx.notes.base.annotation.Like;
+
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
@@ -24,6 +26,7 @@ public class UserEntity implements Serializable {
 
     private String password;
 
+    @Like
     private String nickName;
 
     private Date createTime;
