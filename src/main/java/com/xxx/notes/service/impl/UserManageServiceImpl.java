@@ -62,7 +62,7 @@ public class UserManageServiceImpl implements UserManageService {
     public List<UserEntity> findUserByNickNameLike(String nickName) {
         UserEntity userEntity = new UserEntity();
         userEntity.setNickName(nickName);
-        List<UserEntity> userEntities = userMapper.findUserByNickNameLike(userEntity);
+        List<UserEntity> userEntities = userMapper.findUserByDelFlagLike(1);
         return userEntities;
     }
 

@@ -37,13 +37,26 @@
     <update id="updateByUserNameSelective" parameterType="com.xxx.notes.entity.UserEntity">
         update sys_user
         <set>
-            <if test="userEntity.password != null and userEntity.password != ''"> password = #{userEntity.password}</if>
-            <if test="userEntity.nickName != null and userEntity.nickName != ''"> nick_name = #{userEntity.nickName}</if>
-            <if test="userEntity.updateTime != null"> update_time = #{userEntity.updateTime}</if>
-            <if test="userEntity.delFlag != null and userEntity.delFlag != ''"> del_flag = #{userEntity.delFlag}</if>
+            <if test="password != null and password != ''"> password = #{password}</if>
+            <if test="nickName != null and nickName != ''"> nick_name = #{nickName}</if>
+            <if test="updateTime != null"> update_time = #{updateTime}</if>
+            <if test="delFlag != null and delFlag != ''"> del_flag = #{delFlag}</if>
         </set>
-        where username = #{userEntity.username}
+        where username = #{username}
 
     </update>
+
+
+    <select id="findUserByDelFlagLike" resultType="com.xxx.notes.entity.UserEntity">
+        select id,
+                username,
+                password,
+                nick_name,
+                create_time,
+                update_time,
+                del_flag
+        from sys_user
+        where del_flag like CONCAT('%',#{delFlag},'%')
+    </select>
 
 </mapper>
