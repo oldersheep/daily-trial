@@ -2,12 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xxx.notes.mapper.UserMapper">
 
-    <!--<resultMap id="BaseResultMap" type="com.xxx.notes.entity.UserEntity">-->
-        <!--<result column="id" jdbcType="INTEGER" property="id" />-->
-        <!--<result column="username" jdbcType="VARCHAR" property="username" />-->
-        <!--<result column="password" jdbcType="VARCHAR" property="password" />-->
-        <!--<result column="nick_name" jdbcType="VARCHAR" property="nickName" />-->
-    <!--</resultMap>-->
+    <resultMap id="userMap" type="com.xxx.notes.entity.UserEntity">
+        <result column="id" jdbcType="INTEGER" property="id" />
+        <result column="username" jdbcType="VARCHAR" property="username" />
+        <result column="password" jdbcType="VARCHAR" property="password" />
+        <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
+        <result column="create_time" jdbcType="DATE" property="createTime" />
+        <result column="update_time" jdbcType="DATE" property="updateTime" />
+        <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
+    </resultMap>
 
     <select id="findByUsernameAndPassword" resultType="com.xxx.notes.entity.UserEntity">
         select id,
@@ -22,7 +25,7 @@
           and password=#{password}
     </select>
 
-    <select id="findUserByNickNameLike" resultType="com.xxx.notes.entity.UserEntity">
+    <select id="findUserByNickNameLike" resultMap="userMap">
         select id,
                 username,
                 password,

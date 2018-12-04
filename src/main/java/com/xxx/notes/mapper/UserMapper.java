@@ -26,7 +26,7 @@ public interface UserMapper extends BaseMapper<UserEntity> {
 
     List<UserEntity> findUserByNickNameLike(@Like String nickName);
 
-//    List<UserEntity> findUserByNickNameLike(/*@Param("userEntity")*/ UserEntity userEntity);
+//    List<UserEntity> findUserByNickNameLike(@Param("userEntity") UserEntity userEntity);
 
     int updateByUserNameSelective(UserEntity userEntity);
 

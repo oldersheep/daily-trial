@@ -18,7 +18,7 @@ import java.util.*;
 
 /**
  * @ClassName LikeQueryInterceptor
- * @Description 模糊查询时的插件
+ * @Description 模糊查询时的插件,方法不允许重载,如果重载,必须加@Param注解
  * @Author l17561
  * @Date 2018/11/30 11:18
  * @Version V1.0
@@ -72,7 +72,7 @@ public class LikeQueryInterceptor implements Interceptor {
          * 当有多个参数时，你没有@Param注解时，看mybatis给你报错不报错？？
          * 所以，这个方法针对String的或者是自定义类的那种
          */
-        Object obj = metaObject.getValue("delegate.boundSql.parameterObject");
+        Object obj = metaObject.getValue("delegate.parameterHandler.parameterObject");
 
         int i = id.lastIndexOf('.');
         // 当前执行所执行的方法名
@@ -106,7 +106,7 @@ public class LikeQueryInterceptor implements Interceptor {
                             && parameters[j].getAnnotation(Like.class) != null) {
 
                         Param param = parameters[j].getAnnotation(Param.class);
-                        // 无@Param注解 TODO 有问题
+                        // 无@Param注解
                         if (obj instanceof String && param == null) {
                             obj = replaceSpecialCharacter(String.valueOf(obj));
 
@@ -126,6 +126,9 @@ public class LikeQueryInterceptor implements Interceptor {
                         if (obj instanceof MapperMethod.ParamMap && param != null) {
                             MapperMethod.ParamMap paramMap = (MapperMethod.ParamMap) obj;
                             String value = param.value();
+                            if (!paramMap.containsKey(value)) {
+                                continue;
+                            }
                             entity = paramMap.get(value); // 拿到对应的实体
                         } else {
                             entity =obj;
@@ -150,7 +153,7 @@ public class LikeQueryInterceptor implements Interceptor {
                         }
                     }
                 }
-                metaObject.setValue("delegate.boundSql.parameterObject", obj);
+                metaObject.setValue("delegate.parameterHandler.parameterObject", obj);
             }
         }
 
