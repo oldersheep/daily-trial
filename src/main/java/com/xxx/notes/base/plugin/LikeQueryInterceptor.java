@@ -31,6 +31,7 @@ import java.util.*;
 })
 public class LikeQueryInterceptor implements Interceptor {
 
+    private String countSuffix = "_COUNT";
 
     /**
      * 直接覆盖你所拦截的对象
@@ -64,6 +65,9 @@ public class LikeQueryInterceptor implements Interceptor {
 
         // 获取到 执行的方法名——格式为：包.类.方法
         String id = (String) metaObject.getValue("delegate.mappedStatement.id");
+        if (id.trim().endsWith(countSuffix)){
+            id = id.substring(0, id.lastIndexOf(countSuffix));
+        }
 
         // 大概是@Parma注解吧
         /**
@@ -132,6 +136,10 @@ public class LikeQueryInterceptor implements Interceptor {
                             entity = paramMap.get(value); // 拿到对应的实体
                         } else {
                             entity =obj;
+                        }
+
+                        if (!Objects.equals(typeName, obj.getClass().getName())){
+                            continue;
                         }
 
                         /**
