@@ -28,4 +28,6 @@ public interface UserManageService {
     List<UserEntity> findUserByNickNameLike(String nickName);
 
     void updateUserByUserName(UserEntity userEntity);
+
+    void insertList();
 }

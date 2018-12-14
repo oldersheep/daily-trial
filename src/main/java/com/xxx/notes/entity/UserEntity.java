@@ -35,6 +35,23 @@ public class UserEntity implements Serializable {
 
     private Integer delFlag;
 
+    public UserEntity() {
+    }
+
+    public UserEntity(String username) {
+        this.username = username;
+    }
+
+    public UserEntity(Integer id, String username, String password, String nickName, Date createTime, Date updateTime, Integer delFlag) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.nickName = nickName;
+        this.createTime = createTime;
+        this.updateTime = updateTime;
+        this.delFlag = delFlag;
+    }
+
     public Integer getId() {
         return id;
     }

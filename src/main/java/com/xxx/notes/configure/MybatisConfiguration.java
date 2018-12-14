@@ -11,6 +11,7 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 import tk.mybatis.spring.annotation.MapperScan;
+import tk.mybatis.spring.mapper.MapperScannerConfigurer;
 
 import javax.sql.DataSource;
 import java.util.Properties;
@@ -79,5 +80,20 @@ public class MybatisConfiguration {
 
         return configuration;
     }
+
+    // insertList 不好使的时候，加这段配置，但是这里好似不需要，加了会报错
+    /*@Bean
+    public MapperScannerConfigurer mapperScannerConfigurer(){
+
+        Properties properties=new Properties();
+        properties.put("mappers","tk.mybatis.mapper.common.Mapper,tk.mybatis.mapper.common.MySqlMapper");
+
+        MapperScannerConfigurer scannerConfigurer=new MapperScannerConfigurer();
+        scannerConfigurer.getMapperHelper().setProperties(properties);
+        scannerConfigurer.setBasePackage("com.xxx.notes.mapper");
+        scannerConfigurer.setSqlSessionFactoryBeanName("sqlSessionFactory");
+
+        return scannerConfigurer;
+    }*/
 
 }

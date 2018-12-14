@@ -10,9 +10,12 @@ import com.xxx.notes.entity.UserEntity;
 import com.xxx.notes.mapper.UserMapper;
 import com.xxx.notes.service.UserManageService;
 import com.xxx.notes.vo.PageBean;
+import com.xxx.notes.vo.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -70,5 +73,18 @@ public class UserManageServiceImpl implements UserManageService {
     public void updateUserByUserName(UserEntity userEntity) {
         userEntity.setUpdateTime(new Date());
         userMapper.updateByUserNameSelective(userEntity);
+    }
+
+    @Override
+    public void insertList() {
+
+        UserEntity user1 = new UserEntity("11");
+        UserEntity user2 = new UserEntity("22");
+        UserEntity user3 = new UserEntity("33");
+        UserEntity user4 = new UserEntity("44");
+        UserEntity user5 = new UserEntity("55");
+        List<UserEntity> list = Arrays.asList(user1, user2, user3, user4, user5);
+
+        userMapper.insertList(list);
     }
 }

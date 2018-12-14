@@ -56,4 +56,9 @@ public class IndexController {
 
         return SysResult.ok(userManageService.findUserByNickNameLike(nickName));
     }
+
+    @GetMapping("/insert/list")
+    public void insertList() {
+        userManageService.insertList();
+    }
 }
