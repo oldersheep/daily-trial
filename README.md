@@ -56,7 +56,7 @@ public class MybatisConfiguration {
 
 ### 加载自定义的yml文件
 
-​	可能是从SSM那里带来的坏习惯，喜欢将不同的配置放在不同的文件下，这点不太好，而且有个朋友也说我傻逼，纠结的地方不对，这个是在我要放弃的时候，突然找到的，首先，Spring Boot是提供了默认加载工厂`DefaultPropertySourceFactory`，自己可以根据进行扩展，如下：代码是从网上拿的，具体还没参透。
+​	可能是从SSM那里带来的坏习惯，喜欢将不同的配置放在不同的文件下，这点不太好，而且有个朋友也说我傻逼，纠结的地方不对，这个是在我要放弃的时候，突然找到的，首先，Spring Boot是提供了默认加载工厂`DefaultPropertySourceFactory`，自己可以根据进行扩展，如下：代码是从网上拿的，具体还没参透。而且实际用途也不大，仅仅作为一个解决方案放着。
 
 ```java
 public class YmlPropertyFactory extends DefaultPropertySourceFactory {
@@ -89,9 +89,9 @@ public class YmlPropertyFactory extends DefaultPropertySourceFactory {
 
 ### 自定义注解保存到Redis，以及动态指定Key
 
-​	保存到    `@SaveRedis`的注解，这个是作用在方法级别的注解，标注此方法的结果会保存在Redis中，Key值默认为KEY_，如果参数标有`@Key`的注解，那么这个参数的值，会拼接在默认注解后面，作为整体的key值，这里只是一个普遍的使用方式，并未做任何特殊性扩展。具体可参照`com.xxx.notes.base.aspect.RedisAspect`。
+​	保存到 `@SaveRedis`的注解，这个是作用在方法级别的注解，标注此方法的结果会保存在Redis中，Key值默认为KEY_，如果参数标有`@Key`的注解，那么这个参数的值，会拼接在默认注解后面，作为整体的key值，这里只是一个普遍的使用方式，并未做任何特殊性扩展。具体可参照`com.xxx.notes.base.aspect.RedisAspect`。
 
-
+    注意：这里出现了一个问题，就是spring的环绕通知，方法的返回值可以是void也可以是Object，因为这里将Object的值取出了，然后就会导致，后续这个方法的返回值无法返回给调用者，所以，需要将返回值变为Object，然后将值进行返回。
 
 ## 权限认证
 

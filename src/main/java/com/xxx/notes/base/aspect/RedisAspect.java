@@ -16,8 +16,8 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 
 /**
- * @ClassName JedisAspect
- * @Description TODO
+ * @ClassName RedisAspect
+ * @Description Redis的切面通知
  * @Author l17561
  * @Date 2018/7/20 8:59
  * @Version V1.0
@@ -33,7 +33,7 @@ public class RedisAspect {
     public void saveRedis(){}
 
     @Around(value = "saveRedis()")
-    private void aroundMethod(ProceedingJoinPoint proceedingJoinPoint){
+    private Object aroundMethod(ProceedingJoinPoint proceedingJoinPoint){
         try {
             // 前置通知，获取key
             Method method = ((MethodSignature)proceedingJoinPoint.getSignature()).getMethod();
@@ -59,8 +59,10 @@ public class RedisAspect {
             } else {
                 redisService.set(key, JSON.toJSONString(result));
             }
+            return result;
         } catch (Throwable throwable) {
             throwable.printStackTrace();
+            return null;
         }
     }
 
