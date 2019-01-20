@@ -22,7 +22,7 @@ import redis.clients.jedis.JedisPoolConfig;
 @Configuration
 @EnableCaching
 @PropertySource(value = "classpath:redis.yml", factory = YmlPropertyFactory.class)
-public class JedisConfiguration extends CachingConfigurerSupport {
+public class JedisConfiguration { //extends CachingConfigurerSupport { // 这里将其注释掉，另有考虑
 
     @Value("${spring.redis.host}")
     private String host;
