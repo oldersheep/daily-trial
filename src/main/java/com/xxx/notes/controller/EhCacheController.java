@@ -19,17 +19,18 @@ public class EhCacheController {
     @Qualifier("demo")
     private Cache cache;
 
-    @Cacheable(key = "#str", value = "demo2")
+    @Cacheable(key = "T(String).valueOf('ABC_').concat(#str)", value = "demo")
     @GetMapping("/set")
     public String set(@RequestParam String str) {
 
-        System.out.println(str);
+        System.out.println("set---->" + str);
         return str;
     }
 
     @GetMapping("/get")
-    public String put() {
-
-        return cache.get("123", String.class);
+    public String put(@RequestParam String str) {
+        String result = cache.get("ABC_" + str, String.class);
+        System.out.println("get---->" + result);
+        return result;
     }
 }
