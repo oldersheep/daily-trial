@@ -1,7 +1,5 @@
 package com.xxx.notes.service;
 
-import com.xxx.notes.base.annotation.Key;
-import com.xxx.notes.base.annotation.SaveRedis;
 import com.xxx.notes.dto.SysResult;
 import com.xxx.notes.entity.UserEntity;
 import com.xxx.notes.vo.PageBean;

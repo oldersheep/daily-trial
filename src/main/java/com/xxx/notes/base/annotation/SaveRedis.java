@@ -10,4 +10,6 @@ import java.lang.annotation.Target;
 public @interface SaveRedis {
 
     String prefix() default "KEY_";
+
+    String key();
 }
