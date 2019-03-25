@@ -3,7 +3,6 @@ package com.xxx.notes.mapper;
 import com.xxx.notes.base.annotation.Like;
 import com.xxx.notes.base.annotation.SaveRedis;
 import com.xxx.notes.base.mapper.BaseMapper;
-import com.xxx.notes.entity.UserEntity;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 

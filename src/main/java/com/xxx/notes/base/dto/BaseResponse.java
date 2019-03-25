@@ -1,42 +1,42 @@
-package com.xxx.notes.dto;
+package com.xxx.notes.base.dto;
 
-public class SysResult {
+public class BaseResponse {
 
     private Integer code;
     private String msg;
     private Object data;
 
-    private SysResult(){}
+    private BaseResponse(){}
 
-    public SysResult(Integer code, String msg) {
+    private BaseResponse(Integer code, String msg) {
         this.code = code;
         this.msg = msg;
     }
 
-    private SysResult(Integer code, String msg, Object data) {
+    private BaseResponse(Integer code, String msg, Object data) {
         this.code = code;
         this.msg = msg;
         this.data = data;
     }
 
-    public static SysResult ok () {
+    public static BaseResponse ok () {
 
-        return new SysResult(200,"Success");
+        return new BaseResponse(200,"Success");
     }
 
-    public static SysResult ok (Object data) {
+    public static BaseResponse ok (Object data) {
 
-        return new SysResult(200,"Success", data);
+        return new BaseResponse(200,"Success", data);
     }
 
-    public static SysResult build (Integer code, String msg) {
+    public static BaseResponse build (Integer code, String msg) {
 
-        return new SysResult(code, msg, null);
+        return new BaseResponse(code, msg, null);
     }
 
-    public static SysResult build (Integer code, String msg, Object data) {
+    public static BaseResponse build (Integer code, String msg, Object data) {
 
-        return new SysResult(code, msg, data);
+        return new BaseResponse(code, msg, data);
     }
 
     public Integer getCode() {
