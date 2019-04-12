@@ -1,9 +1,9 @@
 package com.xxx.notes.base.file.support;
 
 import com.xxx.notes.base.constant.HttpHeaders;
+import com.xxx.notes.base.exception.GlobalException;
 import com.xxx.notes.base.file.entity.BasicFileInfo;
-import com.xxx.notes.base.file.exception.FileInfoPersistentException;
-import com.xxx.notes.base.file.exception.FileNotSupportException;
+import com.xxx.notes.base.file.exception.*;
 import com.xxx.notes.base.file.support.component.FileOperationService;
 import com.xxx.notes.base.util.UUIDUtils;
 import org.slf4j.Logger;
@@ -56,11 +56,11 @@ public abstract class AbstractFileOperationService<T extends BasicFileInfo> impl
      */
     public void checkFile(MultipartFile file) {
         if (file == null) {
-            throw new RuntimeException("文件不能为null");
+            throw new FileIsEmptyException();
         }
         int maxSize = getMaxSize();
         if (maxSize > 0 && file.getSize() > (maxSize << MB_SHIFT)) {
-            throw new FileNotSupportException("请上传小于" + maxSize + "MB的文件");
+            throw new FileOutOfSizeException("请上传小于" + maxSize + "MB的文件");
         }
         List<String> typeList = Arrays.asList(getSuffix().toLowerCase().split(","));
         String fileName = file.getOriginalFilename();
@@ -156,7 +156,7 @@ public abstract class AbstractFileOperationService<T extends BasicFileInfo> impl
             }
         } catch (Exception e) {
             log.error("下载时发生异常", e);
-            throw new RuntimeException(e.getMessage());
+            throw new FileDownloadException(e.getMessage());
         }
     }
 
