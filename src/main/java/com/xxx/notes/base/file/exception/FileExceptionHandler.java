@@ -1,5 +1,6 @@
 package com.xxx.notes.base.file.exception;
 
+import com.xxx.notes.base.dto.BaseResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.fileupload.FileUploadException;
 import org.springframework.core.annotation.Order;
@@ -7,9 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @ClassName FileExceptionHandler
@@ -30,48 +28,30 @@ public class FileExceptionHandler {
      */
     @ExceptionHandler(FileUploadException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public Map<String, Object> handleFileUploadException(FileUploadException e) {
+    public BaseResponse<?> handleFileUploadException(FileUploadException e) {
         log.error("upload file failed, because {}", e.getCause());
-        return fail(e.getMessage());
+        return BaseResponse.build(500, e.getMessage());
     }
 
     @ExceptionHandler(FileNotSupportException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Map<String, Object> handleFileNotSupportException(FileNotSupportException e) {
+    public BaseResponse<?> handleFileNotSupportException(FileNotSupportException e) {
         log.error("file not support, because {}", e.getCause());
-        return fail(e.getMessage());
+        return BaseResponse.build(500, e.getMessage());
     }
 
     @ExceptionHandler(FileDownloadException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public Map<String, Object> handleFileDownloadException(FileDownloadException e) {
+    public BaseResponse<?> handleFileDownloadException(FileDownloadException e) {
         log.error("download file failed, because {}", e.getCause());
-        return fail(e.getMessage());
+        return BaseResponse.build(500, e.getMessage());
     }
 
     @ExceptionHandler(FileOutOfSizeException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Map<String, Object> handleFileOutOfSizeException(FileOutOfSizeException e) {
+    public BaseResponse<?> handleFileOutOfSizeException(FileOutOfSizeException e) {
         log.error("file size out, because {}", e.getCause());
-        return fail(e.getMessage());
-    }
-
-    private Map<String, Object> fail() {
-
-        return fail(500, "系统异常！");
-    }
-
-    private Map<String, Object> fail(String message) {
-
-        return fail(500, message);
-    }
-
-    private Map<String, Object> fail(Integer code, String message) {
-
-        Map<String, Object> result = new HashMap<>();
-        result.put("code", code);
-        result.put("message", message);
-        return result;
+        return BaseResponse.build(500, e.getMessage());
     }
 
 }

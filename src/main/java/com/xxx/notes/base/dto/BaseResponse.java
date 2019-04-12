@@ -1,10 +1,10 @@
 package com.xxx.notes.base.dto;
 
-public class BaseResponse {
+public class BaseResponse<T> {
 
     private Integer code;
     private String msg;
-    private Object data;
+    private T data;
 
     private BaseResponse(){}
 
@@ -13,7 +13,7 @@ public class BaseResponse {
         this.msg = msg;
     }
 
-    private BaseResponse(Integer code, String msg, Object data) {
+    private BaseResponse(Integer code, String msg, T data) {
         this.code = code;
         this.msg = msg;
         this.data = data;
@@ -34,7 +34,7 @@ public class BaseResponse {
         return new BaseResponse(code, msg, null);
     }
 
-    public static BaseResponse build (Integer code, String msg, Object data) {
+    public static <T> BaseResponse build (Integer code, String msg, T data) {
 
         return new BaseResponse(code, msg, data);
     }
@@ -59,7 +59,7 @@ public class BaseResponse {
         return data;
     }
 
-    public void setData(Object data) {
+    public void setData(T data) {
         this.data = data;
     }
 
