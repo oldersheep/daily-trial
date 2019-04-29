@@ -3,7 +3,6 @@ server:
   servlet:
     context-path: /
 
-###\u8BBE\u7F6Espring-boot \u7F16\u7801\u683C\u5F0F
 spring:
   messages:
     encoding: UTF-8
