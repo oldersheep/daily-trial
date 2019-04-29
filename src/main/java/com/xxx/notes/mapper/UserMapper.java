@@ -3,13 +3,14 @@ package com.xxx.notes.mapper;
 import com.xxx.notes.base.annotation.Like;
 import com.xxx.notes.base.annotation.SaveRedis;
 import com.xxx.notes.base.mapper.BaseMapper;
+import com.xxx.notes.entity.UserEntity;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public interface UserMapper {//extends BaseMapper<UserEntity> {
+public interface UserMapper extends BaseMapper<UserEntity> {
 
     /**
      *  根据用户名密码查询用户
