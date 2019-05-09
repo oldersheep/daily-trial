@@ -1,8 +1,10 @@
 package com.xxx.notes.configure;
 
 import com.xxx.notes.base.interceptor.AuthorizationInterceptor;
+import com.xxx.notes.base.web.databind.StringToParameterEnumConverterFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.format.FormatterRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -29,5 +31,10 @@ public class WebAppConfiguration implements WebMvcConfigurer {
         // registry.addInterceptor(new AuthorizationInterceptor()).addPathPatterns("/**");
 
         registry.addInterceptor(authorization()).addPathPatterns("/**");
+    }
+
+    @Override
+    public void addFormatters(FormatterRegistry registry) {
+        registry.addConverterFactory(new StringToParameterEnumConverterFactory());
     }
 }
