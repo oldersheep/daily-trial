@@ -6,6 +6,8 @@ server:
 spring:
   messages:
     encoding: UTF-8
+    basename: i18n/validation/message  # 要定义到文件名这个层次
+    always-use-message-format: true
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/test?autoReconnect=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false&zeroDateTimeBehavior=convertToNull&rewriteBatchedStatements=true&useServerPrepStmts=false&allowMultiQueries=true

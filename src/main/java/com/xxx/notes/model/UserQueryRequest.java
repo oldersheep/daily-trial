@@ -20,7 +20,7 @@ public class UserQueryRequest implements Serializable {
     @Length(max = 16, message = "用户名长度过长")
     private String username;
 
-    @NotEmpty(message = "密码不能为空")
+    @NotEmpty(message = "{login.password.validator}")
     @Length(min = 4, message = "密码至少四位")
     private String password;
 }

@@ -34,6 +34,7 @@ public class GlobalExceptionHandler {
         return BaseResponse.build(400, errorInformation.toString());
     }
 
+    // 校验器不通过走这里
     @ExceptionHandler(ConstraintViolationException.class)
     public BaseResponse<?> validationErrorHandler(ConstraintViolationException ex) {
         List<String> errorInformation = ex.getConstraintViolations()
