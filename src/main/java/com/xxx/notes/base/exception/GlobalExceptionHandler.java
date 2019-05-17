@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-
+    // @RequestBody走这里
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public BaseResponse<?> validationErrorHandler(MethodArgumentNotValidException ex) {
         // 同样是获取BindingResult对象，然后获取其中的错误信息
@@ -31,16 +31,16 @@ public class GlobalExceptionHandler {
                 .stream()
                 .map(ObjectError::getDefaultMessage)
                 .collect(Collectors.toList());
-        return BaseResponse.build(400, errorInformation.toString());
+        return BaseResponse.build(402, errorInformation.toString());
     }
 
-    // 校验器不通过走这里
+    // @Param走这里
     @ExceptionHandler(ConstraintViolationException.class)
     public BaseResponse<?> validationErrorHandler(ConstraintViolationException ex) {
         List<String> errorInformation = ex.getConstraintViolations()
                 .stream()
                 .map(ConstraintViolation::getMessage)
                 .collect(Collectors.toList());
-        return BaseResponse.build(400, errorInformation.toString());
+        return BaseResponse.build(401, errorInformation.toString());
     }
 }
