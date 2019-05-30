@@ -2,7 +2,7 @@ package com.xxx.notes.base.file.exception;
 
 import com.xxx.notes.base.dto.BaseResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.fileupload.FileUploadException;
+import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;

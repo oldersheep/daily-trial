@@ -28,6 +28,10 @@ spring:
     username: llg3904@163.com
     password: 8023you
     default-encoding: UTF-8
+  servlet:
+    multipart:
+      max-file-size: 100Mb
+      max-request-size: 300Mb
 #  activemq:
 #    broker-url: tcp://192.168.145.128:61616
 #  cache:
