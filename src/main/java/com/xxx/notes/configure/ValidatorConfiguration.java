@@ -44,7 +44,15 @@ public class ValidatorConfiguration {
 
     @Bean
     public MessageInterpolator interpolator(MessageSource messageSource) {
+        return new ResourceBundleMessageInterpolator(new PlatformResourceBundleLocator("i18n/validation"));
+        // 暂时未发现二者具体应用过程中的差异
+        // return new ResourceBundleMessageInterpolator(new MessageSourceResourceBundleLocator(messageSource));
+    }
 
-        return new ResourceBundleMessageInterpolator(new MessageSourceResourceBundleLocator(messageSource));
+    @Bean
+    public MethodValidationPostProcessor methodValidationPostProcessor() {
+        MethodValidationPostProcessor postProcessor = new MethodValidationPostProcessor();
+        postProcessor.setValidator(validator());
+        return postProcessor;
     }
 }
