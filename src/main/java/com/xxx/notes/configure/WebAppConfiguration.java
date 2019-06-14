@@ -2,9 +2,12 @@ package com.xxx.notes.configure;
 
 import com.xxx.notes.base.interceptor.AuthorizationInterceptor;
 import com.xxx.notes.base.web.databind.StringToParameterEnumConverterFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
+import org.springframework.validation.Validator;
+import org.springframework.validation.beanvalidation.SpringValidatorAdapter;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -18,6 +21,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebAppConfiguration implements WebMvcConfigurer {
 
+    @Autowired
+    javax.validation.Validator validator;
+    
     // 让spring进行管理，会将依赖的类进行注入
     @Bean
     public AuthorizationInterceptor authorization() {
@@ -36,5 +42,10 @@ public class WebAppConfiguration implements WebMvcConfigurer {
     @Override
     public void addFormatters(FormatterRegistry registry) {
         registry.addConverterFactory(new StringToParameterEnumConverterFactory());
+    }
+    
+    @Override
+    public Validator getValidator() {
+        return new SpringValidatorAdapter(validator);
     }
 }
